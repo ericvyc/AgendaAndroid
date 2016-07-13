@@ -13,17 +13,17 @@
     tools:showIn="@layout/activity_formulario">
 
     <RatingBar
-        android:id="@+id/ratingBar"
+        android:id="@+id/formulario_nota"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/siteText"
+        android:layout_below="@+id/formulario_site"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="25dp"
         android:max="10"
         android:numStars="5" />
 
     <EditText
-        android:id="@+id/nomeText"
+        android:id="@+id/formulario_nome"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="24dp"
@@ -33,40 +33,40 @@
         android:layout_alignParentStart="true" />
 
     <EditText
-        android:id="@+id/enderecoText"
+        android:id="@+id/fomrulario_endereco"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
-        android:layout_below="@+id/nomeText"
+        android:layout_below="@+id/formulario_nome"
         android:layout_marginTop="30dp"
         android:hint="Endereço" />
 
     <EditText
-        android:id="@+id/telefoneText"
+        android:id="@+id/formulario_telefone"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
-        android:layout_below="@+id/enderecoText"
+        android:layout_below="@+id/fomrulario_endereco"
         android:layout_marginTop="32dp"
         android:hint="Telefone" />
 
     <EditText
-        android:id="@+id/siteText"
+        android:id="@+id/formulario_site"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
-        android:layout_below="@+id/telefoneText"
+        android:layout_below="@+id/formulario_telefone"
         android:layout_marginTop="29dp"
         android:hint="Site" />
 
     <Button
-        android:id="@+id/botaoSalvar"
+        android:id="@+id/formulario_salvar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/ratingBar"
+        android:layout_below="@+id/formulario_nota"
         android:layout_centerHorizontal="true"
         android:layout_marginLeft="10dp"
         android:layout_marginRight="10dp"
