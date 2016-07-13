@@ -25,6 +25,18 @@ public class ListaAlunosActivity extends AppCompatActivity {
         alunos.add("Vilar");
         alunos.add("Yankous");
         alunos.add("Castanheira");
+        alunos.add("Eric");
+        alunos.add("Vilar");
+        alunos.add("Yankous");
+        alunos.add("Castanheira");
+        alunos.add("Eric");
+        alunos.add("Vilar");
+        alunos.add("Yankous");
+        alunos.add("Castanheira");
+        alunos.add("Eric");
+        alunos.add("Vilar");
+        alunos.add("Yankous");
+        alunos.add("Castanheira");
 
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, alunos);
         listViewAlunos.setAdapter(adapter);
