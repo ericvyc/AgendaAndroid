@@ -1,9 +1,12 @@
 package br.com.alura.agenda;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.view.View;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.ListView;
 
 import java.util.ArrayList;
@@ -40,6 +43,15 @@ public class ListaAlunosActivity extends AppCompatActivity {
 
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, alunos);
         listViewAlunos.setAdapter(adapter);
+
+        Button novoAluno = (Button) findViewById(R.id.novo_aluno);
+        novoAluno.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intentCallFormulario = new Intent(ListaAlunosActivity.this, FormularioActivity.class);
+                startActivity(intentCallFormulario);
+            }
+        });
 
     }
 }
