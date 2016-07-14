@@ -15,11 +15,11 @@
 
     <Button
         android:id="@+id/novo_aluno"
-        android:layout_width="46dp"
-        android:layout_height="46dp"
+        android:layout_width="56dp"
+        android:layout_height="56dp"
         android:text="+"
         android:textColor="#ffffff"
-        android:textSize="30sp"
+        android:textSize="36sp"
         android:elevation="6dp"
         android:layout_alignParentBottom="true"
         android:layout_alignParentRight="true"
