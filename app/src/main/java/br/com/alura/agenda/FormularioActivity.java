@@ -1,5 +1,6 @@
 package br.com.alura.agenda;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -23,6 +24,14 @@ public class FormularioActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
 
         helper = new FormularioHelper(this);
+
+        Intent intent = getIntent();
+        Aluno aluno = (Aluno) intent.getSerializableExtra("aluno");
+
+        if(aluno != null) {
+            helper.preencheFormulario(aluno);
+        }
+
     }
 
     @Override
