@@ -23,14 +23,7 @@ public class ListaAlunosActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        AlunoDAO dao = new AlunoDAO(this);
-        List<Aluno> alunos = dao.buscaAlunos();
-        dao.close();
-
-        ListView listViewAlunos = (ListView) findViewById(R.id.lista_aluno);
-
-        ArrayAdapter<Aluno> adapter = new ArrayAdapter<Aluno>(this, android.R.layout.simple_list_item_1, alunos);
-        listViewAlunos.setAdapter(adapter);
+        carregaListaAlunos();
 
         Button novoAluno = (Button) findViewById(R.id.novo_aluno);
         novoAluno.setOnClickListener(new View.OnClickListener() {
@@ -41,5 +34,21 @@ public class ListaAlunosActivity extends AppCompatActivity {
             }
         });
 
+    }
+
+    private void carregaListaAlunos() {
+        AlunoDAO dao = new AlunoDAO(this);
+        List<Aluno> alunos = dao.buscaAlunos();
+        dao.close();
+
+        ListView listViewAlunos = (ListView) findViewById(R.id.lista_aluno);
+        ArrayAdapter<Aluno> adapter = new ArrayAdapter<Aluno>(this, android.R.layout.simple_list_item_1, alunos);
+        listViewAlunos.setAdapter(adapter);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        carregaListaAlunos();
     }
 }
