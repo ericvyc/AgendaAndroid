@@ -25,7 +25,7 @@
         android:layout_alignParentRight="true"
         android:layout_marginBottom="16dp"
         android:layout_marginRight="16dp"
-        android:background="@drawable/fundo"
+        android:background="@drawable/fundo_camera"
         android:stateListAnimator="@null" />
 
 </RelativeLayout>
