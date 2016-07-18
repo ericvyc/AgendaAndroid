@@ -1,8 +1,10 @@
 package br.com.alura.agenda;
 
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.ContextMenu;
@@ -88,6 +90,31 @@ public class ListaAlunosActivity extends AppCompatActivity {
         //Pega aluno clicado da ListView para o context menu
         AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) menuInfo;
         final Aluno aluno = (Aluno) listViewAlunos.getItemAtPosition(info.position);
+
+        //Botão de ligar e intent de ligação
+        MenuItem itemLigar = menu.add("Ligar");
+        itemLigar.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem menuItem) {
+
+                //Testa se a permissão de ligação está concedida à aplicação pelo usuário - necessário para Android 6.0+
+                if(ActivityCompat.checkSelfPermission(ListaAlunosActivity.this, android.Manifest.permission.CALL_PHONE)
+                        != PackageManager.PERMISSION_GRANTED) {
+                    //Se não estiver concedida, pede a permissão - (123 - request code - necessario para identificar no
+                    // onRequestPermissionsResult)
+                    ActivityCompat.requestPermissions(ListaAlunosActivity.this,
+                            new String[]{android.Manifest.permission.CALL_PHONE}, 123);
+                } else {
+                    //Se está concedida, realiza a ação de ligar
+                    Intent intentLigar = new Intent(Intent.ACTION_CALL);
+                    intentLigar.setData(Uri.parse("tel:" + aluno.getTelefone()));
+                    startActivity(intentLigar);
+                }
+
+
+                return false;
+            }
+        });
 
         //Botão de SMS e intent de SMS
         MenuItem itemSMS = menu.add("Enviar SMS");
