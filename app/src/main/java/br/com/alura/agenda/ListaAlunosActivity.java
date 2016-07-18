@@ -32,6 +32,7 @@ public class ListaAlunosActivity extends AppCompatActivity {
 
         listViewAlunos = (ListView) findViewById(R.id.lista_aluno);
 
+        //Listener colocando aluno na intent ao chamar FormularioActivity para edição
         listViewAlunos.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> lista, View item, int position, long id) {
@@ -50,6 +51,7 @@ public class ListaAlunosActivity extends AppCompatActivity {
 //            }
 //        });
 
+        //Botão para chamar formuçário sem aluno para a inclusão
         Button novoAluno = (Button) findViewById(R.id.novo_aluno);
         novoAluno.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -63,6 +65,7 @@ public class ListaAlunosActivity extends AppCompatActivity {
 
     }
 
+    //Método para carregar lista de alunos do banco de dados
     private void carregaListaAlunos() {
         AlunoDAO dao = new AlunoDAO(this);
         List<Aluno> alunos = dao.buscaAlunos();
@@ -72,6 +75,7 @@ public class ListaAlunosActivity extends AppCompatActivity {
         listViewAlunos.setAdapter(adapter);
     }
 
+    //Carregar lista de alunos após Activity ser interrompida
     @Override
     protected void onResume() {
         super.onResume();
@@ -81,33 +85,51 @@ public class ListaAlunosActivity extends AppCompatActivity {
     @Override
     public void onCreateContextMenu(ContextMenu menu, View v, final ContextMenu.ContextMenuInfo menuInfo) {
 
+        //Pega aluno clicado da ListView para o context menu
         AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) menuInfo;
         final Aluno aluno = (Aluno) listViewAlunos.getItemAtPosition(info.position);
 
+        //Botão de SMS e intent de SMS
+        MenuItem itemSMS = menu.add("Enviar SMS");
+        Intent intentSMS = new Intent(Intent.ACTION_VIEW);
+        intentSMS.setData(Uri.parse("sms:"+aluno.getTelefone()));
+        itemSMS.setIntent(intentSMS);
+
+        //Botão de mapa e intent de mapa
+        MenuItem itemMapa = menu.add("Visualizar no mapa");
+        Intent intentMapa = new Intent(Intent.ACTION_VIEW);
+        intentMapa.setData(Uri.parse("geo:0,0?q=" + aluno.getEndereco()));
+        itemMapa.setIntent(intentMapa);
+
+        //Botão de visitar site e intent de visitar site
         MenuItem itemSite = menu.add("Visitar site");
         Intent intentSite = new Intent(Intent.ACTION_VIEW);
 
+        //If para tratar o protocolo para abrir o browser
         String site = aluno.getSite();
-
         if(!site.startsWith("http://")){
             site = "http://" + site;
         }
-
+        //Setando o URI com a URL do site do aluno
         intentSite.setData(Uri.parse(site));
         itemSite.setIntent(intentSite);
 
+        //Botão de deletar usando listener
         MenuItem deletar = menu.add("Deletar");
         deletar.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
             @Override
             public boolean onMenuItemClick(MenuItem menuItem) {
 
+                //Deletando aluno do banco
                 AlunoDAO dao = new AlunoDAO(ListaAlunosActivity.this);
                 dao.deleta(aluno);
                 dao.close();
 
+                //Chamando toast com o nome do aluno deletado
                 Toast.makeText(ListaAlunosActivity.this, "Aluno " + aluno.getNome() + " deletado",
                         Toast.LENGTH_SHORT).show();
 
+                //Atualizando lista de alunos
                 carregaListaAlunos();
                 return false;
             }
