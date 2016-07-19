@@ -1,6 +1,9 @@
 package br.com.alura.agenda;
 
+import android.app.Activity;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
@@ -11,6 +14,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import java.io.File;
@@ -20,7 +24,9 @@ import br.com.alura.agenda.modelo.Aluno;
 
 public class FormularioActivity extends AppCompatActivity {
 
+    public static final int CODIGO_CAMERA = 567;
     private FormularioHelper helper;
+    private String caminhoFoto;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,17 +59,49 @@ public class FormularioActivity extends AppCompatActivity {
                 Intent intentCamera = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
 
                 //Cria o caminho da imagem e o nome com currentTimeMillis()
-                String caminhoFoto = getExternalFilesDir(null) + "/" + System.currentTimeMillis() + ".jpg";
+                caminhoFoto = getExternalFilesDir(null) + "/" + System.currentTimeMillis() + ".jpg";
 
                 //Gera um arquivo com o caminho para salvar a foto a ser tirada com a câmera
                 File arquivoFoto = new File(caminhoFoto);
 
                 //Passa o caminho da foto a ser salva como parametro para intent
                 intentCamera.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(arquivoFoto));
-                startActivity(intentCamera);
+
+                //Chama activity da câmera com o código (segundo parâmetro) a ser usado no
+                // onActivityResult para tratar o retorno (callback)
+                startActivityForResult(intentCamera, CODIGO_CAMERA);
             }
         });
 
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+
+        //Testa se a activity aberta foi realizada com sucesso
+        if(resultCode == Activity.RESULT_OK) {
+
+            //Testa se o código que está retornando é da activity de câmera passado como parâmetro
+            // no startActivityForResult
+            if (requestCode == CODIGO_CAMERA) {
+
+                //Se o código for o código da activity da câmera, pega a ImageView e
+                // seta em uma variável
+                ImageView foto = (ImageView) findViewById(R.id.formulario_foto);
+
+                //Cria bitmap atraves do caminho da imagem
+                Bitmap bitmap = BitmapFactory.decodeFile(caminhoFoto);
+
+                //Reduz imagem para caber no ImageView
+                Bitmap bitmapReduzido = Bitmap.createScaledBitmap(bitmap, 300, 300, true);
+
+                //Seta foto reduziada no ImageView
+                foto.setImageBitmap(bitmapReduzido);
+
+                //Encaixar imagem na altura e largura disponível no ImageView
+                foto.setScaleType(ImageView.ScaleType.FIT_XY);
+            }
+        }
     }
 
     @Override
