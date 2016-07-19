@@ -2,8 +2,6 @@ package br.com.alura.agenda;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
@@ -14,7 +12,6 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
-import android.widget.ImageView;
 import android.widget.Toast;
 
 import java.io.File;
@@ -85,21 +82,8 @@ public class FormularioActivity extends AppCompatActivity {
             // no startActivityForResult
             if (requestCode == CODIGO_CAMERA) {
 
-                //Se o código for o código da activity da câmera, pega a ImageView e
-                // seta em uma variável
-                ImageView foto = (ImageView) findViewById(R.id.formulario_foto);
+                helper.carregaImagem(caminhoFoto);
 
-                //Cria bitmap atraves do caminho da imagem
-                Bitmap bitmap = BitmapFactory.decodeFile(caminhoFoto);
-
-                //Reduz imagem para caber no ImageView
-                Bitmap bitmapReduzido = Bitmap.createScaledBitmap(bitmap, 300, 300, true);
-
-                //Seta foto reduziada no ImageView
-                foto.setImageBitmap(bitmapReduzido);
-
-                //Encaixar imagem na altura e largura disponível no ImageView
-                foto.setScaleType(ImageView.ScaleType.FIT_XY);
             }
         }
     }

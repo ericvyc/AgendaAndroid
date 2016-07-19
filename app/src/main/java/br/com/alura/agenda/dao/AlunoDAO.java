@@ -20,7 +20,7 @@ public class AlunoDAO extends SQLiteOpenHelper {
     //Construtor padrão passando como parâmetros o context, nome do banco
     // factory e versão do banco
     public AlunoDAO(Context context) {
-        super(context, "Agenda", null, 1);
+        super(context, "Agenda", null, 2);
     }
 
     @Override
@@ -31,17 +31,27 @@ public class AlunoDAO extends SQLiteOpenHelper {
                 "endereco TEXT, " +
                 "telefone TEXT, " +
                 "site TEXT, " +
-                "nota REAL);";
+                "nota REAL," +
+                "caminhoFoto TEXT);";
         db.execSQL(sql);
     }
 
+    //Atualizando banco, passando como parâmetros o banco, a versão antiga
+    // e a versão atual
     @Override
     public void onUpgrade(SQLiteDatabase db, int i, int i1) {
-        //Atualizando banco, passando como parâmetros o banco, a versão antiga
-        // e a versão atual
-        String sql = "DROP TABLE IF EXISTS Alunos";
-        db.execSQL(sql);
-        onCreate(db);
+
+        String sql = "";
+
+        //Testa a versão local do banco, e inicia a execução do codigo de atualização a partir
+        // desta versão, atualizando para cada versão seguinte (case 1 -> case 2 -> case 3...)
+        // devido a ausência de break
+        switch (i) {
+            case 1:
+                sql = "ALTER TABLE Alunos ADD COLUMUN caminhoFoto TEXT";
+                db.execSQL(sql);
+        }
+
     }
 
     public void insere(Aluno aluno) {
@@ -67,6 +77,7 @@ public class AlunoDAO extends SQLiteOpenHelper {
         dados.put("telefone", aluno.getTelefone());
         dados.put("site", aluno.getSite());
         dados.put("nota", aluno.getNota());
+        dados.put("caminhoFoto", aluno.getCaminhoFoto());
         return dados;
     }
 
@@ -95,6 +106,7 @@ public class AlunoDAO extends SQLiteOpenHelper {
             aluno.setTelefone(c.getString(c.getColumnIndex("telefone")));
             aluno.setSite(c.getString(c.getColumnIndex("site")));
             aluno.setNota(c.getDouble(c.getColumnIndex("nota")));
+            aluno.setCaminhoFoto(c.getString(c.getColumnIndex("caminhoFoto")));
 
             //Adiciona o Aluno na lista de Alunos
             alunos.add(aluno);
