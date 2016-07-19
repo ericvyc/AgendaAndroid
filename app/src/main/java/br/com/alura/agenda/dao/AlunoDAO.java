@@ -17,12 +17,15 @@ import br.com.alura.agenda.modelo.Aluno;
  */
 public class AlunoDAO extends SQLiteOpenHelper {
 
+    //Construtor padrão passando como parâmetros o context, nome do banco
+    // factory e versão do banco
     public AlunoDAO(Context context) {
         super(context, "Agenda", null, 1);
     }
 
     @Override
     public void onCreate(SQLiteDatabase db) {
+        //Criando tabela de Alunos no banco
         String sql = "CREATE TABLE Alunos (id INTEGER PRIMARY KEY, " +
                 "nome TEXT NOT NULL, " +
                 "endereco TEXT, " +
@@ -34,21 +37,30 @@ public class AlunoDAO extends SQLiteOpenHelper {
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int i, int i1) {
+        //Atualizando banco, passando como parâmetros o banco, a versão antiga
+        // e a versão atual
         String sql = "DROP TABLE IF EXISTS Alunos";
         db.execSQL(sql);
         onCreate(db);
     }
 
     public void insere(Aluno aluno) {
+        //Pega banco com permissão de escrita
         SQLiteDatabase db = getWritableDatabase();
 
+        //Cria um ContentValues para usar os dados do aluno na query
+        // de inserção
         ContentValues dados = pegaDadosAluno(aluno);
 
+        //Inserse o Aluno no banco usando o ContentValues como valores
+        // nas colunas
         db.insert("Alunos", null, dados);
     }
 
     @NonNull
     private ContentValues pegaDadosAluno(Aluno aluno) {
+
+        //Cria ContentValues e seta os atributos do aluno como Key/Value
         ContentValues dados = new ContentValues();
         dados.put("nome", aluno.getNome());
         dados.put("endereco", aluno.getEndereco());
@@ -59,14 +71,23 @@ public class AlunoDAO extends SQLiteOpenHelper {
     }
 
     public List<Aluno> buscaAlunos() {
+
+        //Cria query para recuperar Alunos
         String sql = "SELECT * FROM Alunos;";
+
+        //Pega banco com permissão de leitura
         SQLiteDatabase db = getReadableDatabase();
+
+        //Seta o resultado da query no cursor
         Cursor c = db.rawQuery(sql, null);
 
+        //Lista de Alunos para ser iterada e adicionar os objetos Aluno
         List<Aluno> alunos = new ArrayList<Aluno>();
 
+        //Itera a os resultados no cursos enquanto houver resultados
         while(c.moveToNext()){
 
+            //Instancia novo aluno e seta os valores da linha do resultado no objeto
             Aluno aluno = new Aluno();
             aluno.setId(c.getLong(c.getColumnIndex("id")));
             aluno.setNome(c.getString(c.getColumnIndex("nome")));
@@ -75,27 +96,43 @@ public class AlunoDAO extends SQLiteOpenHelper {
             aluno.setSite(c.getString(c.getColumnIndex("site")));
             aluno.setNota(c.getDouble(c.getColumnIndex("nota")));
 
+            //Adiciona o Aluno na lista de Alunos
             alunos.add(aluno);
 
         }
 
+        //Fecha o cursor
         c.close();
 
         return alunos;
     }
 
     public void deleta(Aluno aluno) {
+
+        //Pega banco com permissão de escrita
         SQLiteDatabase db = getWritableDatabase();
+
+        //Seta o id do aluno como parâmetro para query de exclusão
         String[] params = {aluno.getId().toString()};
+
+        //Deleta o aluno pelo id passado como parâmetro no Array de String
         db.delete("Alunos", "id = ?", params);
     }
 
     public void altera(Aluno aluno) {
+
+        //Pega banco com permissão de escrita
         SQLiteDatabase db = getWritableDatabase();
 
+        //Chama método que retorna os dados do Aluno num ContentValues
+        // no formato Key/Value
         ContentValues dados = pegaDadosAluno(aluno);
+
+        //Seta o id do aluno como parâmetro para query de alteração
         String[] params = {aluno.getId().toString()};
 
+        //Altera o aluno pelo id passado como parâmetro no Array de String
+        // e coloca os valores do ContentValues nas colunas
         db.update("Alunos", dados, "id = ?", params);
     }
 }
