@@ -1,13 +1,18 @@
 package br.com.alura.agenda.adapter;
 
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.util.List;
 
+import br.com.alura.agenda.R;
 import br.com.alura.agenda.modelo.Aluno;
 
 /**
@@ -44,13 +49,50 @@ public class AlunosAdapter extends BaseAdapter {
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
 
-        //Retorna uma View para o Adapter, aonde será construida de acordo com o
-        // layout definido
-        TextView view = new TextView(context);
-
+        //Pega aluno na posição passada como parâmetro da lista
         Aluno aluno = alunos.get(position);
 
-        view.setText(aluno.toString());
+        //Pega o layout criado e infla ele
+        LayoutInflater inflater = LayoutInflater.from(context);
+
+        //Seta a convertView em uma outra variavel view
+        View view = convertView;
+
+        //Testa se a convertView está nula (elementos prontos da lista acima e abaixo)
+        // para evitar inflar sempre o layout xml criado e com isso ganhar performance
+        if(view == null) {
+            //Caso a convertView esteja nula, infla o layout xml criado e instancia ele na view
+            view = inflater.inflate(R.layout.list_item, parent, false);
+        }
+
+        //Pega campo nome do layout criado e seta o nome do aluno
+        TextView campoNome = (TextView) view.findViewById(R.id.item_nome);
+        campoNome.setText(aluno.getNome());
+
+        //Pega campo telefone do layout criado e seta o telefone do aluno
+        TextView campoTelefone = (TextView) view.findViewById(R.id.item_telefone);
+        campoTelefone.setText(aluno.getTelefone());
+
+        //Pega ImageView da foto do layout criado
+        ImageView campoFoto = (ImageView) view.findViewById(R.id.item_foto);
+
+        //Testa se o caminhoFoto é diferente de nulo, ou seja, caso haja
+        // uma imagem para esse Aluno
+        if(aluno.getCaminhoFoto() != null) {
+
+            //Cria bitmap atraves do caminho da imagem
+            Bitmap bitmap = BitmapFactory.decodeFile(aluno.getCaminhoFoto());
+
+            //Reduz imagem para caber no ImageView
+            Bitmap bitmapReduzido = Bitmap.createScaledBitmap(bitmap, 100, 100, true);
+
+            //Seta foto reduziada no ImageView
+            campoFoto.setImageBitmap(bitmapReduzido);
+
+            //Encaixar imagem na altura e largura disponível no ImageView
+            campoFoto.setScaleType(ImageView.ScaleType.FIT_XY);
+
+        }
 
         return view;
     }
