@@ -1,13 +1,19 @@
 package br.com.alura.agenda;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.Button;
 import android.widget.Toast;
+
+import java.io.File;
 
 import br.com.alura.agenda.dao.AlunoDAO;
 import br.com.alura.agenda.modelo.Aluno;
@@ -27,7 +33,7 @@ public class FormularioActivity extends AppCompatActivity {
         helper = new FormularioHelper(this);
 
         //Pega intent caso tenha sido colocado ao chamar a Activity (Usado na edição)
-        Intent intent = getIntent();
+        final Intent intent = getIntent();
         //Seta aluno que foi passado na Intent
         Aluno aluno = (Aluno) intent.getSerializableExtra("aluno");
 
@@ -36,6 +42,27 @@ public class FormularioActivity extends AppCompatActivity {
             //Se o aluno não for nulo, instancia seus valores nos campos do formulario
             helper.preencheFormulario(aluno);
         }
+
+        //Pega botao da foto em variavel
+        Button botaoFoto = (Button) findViewById(R.id.formulario_botao_foto);
+        //Seta listener para abrir câmera ao clicar no botão
+        botaoFoto.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                //Chama a ação de abrir a câmera pela intent
+                Intent intentCamera = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+
+                //Cria o caminho da imagem e o nome com currentTimeMillis()
+                String caminhoFoto = getExternalFilesDir(null) + "/" + System.currentTimeMillis() + ".jpg";
+
+                //Gera um arquivo com o caminho para salvar a foto a ser tirada com a câmera
+                File arquivoFoto = new File(caminhoFoto);
+
+                //Passa o caminho da foto a ser salva como parametro para intent
+                intentCamera.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(arquivoFoto));
+                startActivity(intentCamera);
+            }
+        });
 
     }
 
