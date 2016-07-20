@@ -119,8 +119,15 @@ public class ListaAlunosActivity extends AppCompatActivity {
                 // retornada e seta em uma variavel
                 String json = conversor.converteParaJSON(alunos);
 
+                //Instancia um WebClient
+                WebClient client = new WebClient();
+
+                //Chama o método de post do WebClient passando o json dos alunos do banco
+                // como parâmetro
+                String resposta = client.post(json);
+
                 //Chama um Toast com o json gerado
-                Toast.makeText(this, json, Toast.LENGTH_LONG).show();
+                Toast.makeText(this, resposta, Toast.LENGTH_LONG).show();
                 break;
         }
 
