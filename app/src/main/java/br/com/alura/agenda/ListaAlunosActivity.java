@@ -8,6 +8,7 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.ContextMenu;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
@@ -18,6 +19,7 @@ import android.widget.Toast;
 import java.util.List;
 
 import br.com.alura.agenda.adapter.AlunosAdapter;
+import br.com.alura.agenda.converter.AlunoConverter;
 import br.com.alura.agenda.dao.AlunoDAO;
 import br.com.alura.agenda.modelo.Aluno;
 
@@ -83,6 +85,46 @@ public class ListaAlunosActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
         carregaListaAlunos();
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+
+        //Infla o xml menulista_alunos
+        getMenuInflater().inflate(R.menu.menu_lista_alunos, menu);
+
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+
+        //Testa se o item clicado foi o item de enviar notas
+        switch (item.getItemId()) {
+            case R.id.menu_enviar_notas :
+
+                //Se for o item clicado for o item de enviar notas, instancia um AlunoDAO
+                AlunoDAO dao = new AlunoDAO(this);
+
+                //Pega a lista de alunos do banco de dados
+                List<Aluno> alunos = dao.buscaAlunos();
+
+                //Fecha o DAO
+                dao.close();
+
+                //Instancia classe AlunoConverter
+                AlunoConverter conversor = new AlunoConverter();
+
+                //Chama o metodo converterParaJSON da classe AlunoConverter, pega a String json
+                // retornada e seta em uma variavel
+                String json = conversor.converteParaJSON(alunos);
+
+                //Chama um Toast com o json gerado
+                Toast.makeText(this, json, Toast.LENGTH_LONG).show();
+                break;
+        }
+
+        return super.onOptionsItemSelected(item);
     }
 
     @Override
