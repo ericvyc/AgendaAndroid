@@ -147,4 +147,23 @@ public class AlunoDAO extends SQLiteOpenHelper {
         // e coloca os valores do ContentValues nas colunas
         db.update("Alunos", dados, "id = ?", params);
     }
+
+    public boolean ehAluno(String telefone) {
+
+        //Pega instancia do banco com permissão de leitura
+        SQLiteDatabase db = getReadableDatabase();
+
+        //Cria query que procura um aluno com o telefone passado como parâmetro e seta o
+        // resultado num cursos
+        Cursor c = db.rawQuery("SELECT * FROM Alunos WHERE telefone = ?", new String[]{telefone});
+
+        //Pega o numero de resultados da query
+        int resultados = c.getCount();
+
+        //Fecha o cursos
+        c.close();
+
+        //Retorna true se tiver resultados e false se não tiver resultados
+        return resultados > 0;
+    }
 }
