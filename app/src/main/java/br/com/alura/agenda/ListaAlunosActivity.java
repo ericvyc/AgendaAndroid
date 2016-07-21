@@ -19,7 +19,6 @@ import android.widget.Toast;
 import java.util.List;
 
 import br.com.alura.agenda.adapter.AlunosAdapter;
-import br.com.alura.agenda.converter.AlunoConverter;
 import br.com.alura.agenda.dao.AlunoDAO;
 import br.com.alura.agenda.modelo.Aluno;
 
@@ -103,31 +102,10 @@ public class ListaAlunosActivity extends AppCompatActivity {
         switch (item.getItemId()) {
             case R.id.menu_enviar_notas :
 
-                //Se for o item clicado for o item de enviar notas, instancia um AlunoDAO
-                AlunoDAO dao = new AlunoDAO(this);
+                //Chama a task async que faz a requisição no servidor num Thread
+                // secundária
+                new EnviaAlunosTask(this).execute();
 
-                //Pega a lista de alunos do banco de dados
-                List<Aluno> alunos = dao.buscaAlunos();
-
-                //Fecha o DAO
-                dao.close();
-
-                //Instancia classe AlunoConverter
-                AlunoConverter conversor = new AlunoConverter();
-
-                //Chama o metodo converterParaJSON da classe AlunoConverter, pega a String json
-                // retornada e seta em uma variavel
-                String json = conversor.converteParaJSON(alunos);
-
-                //Instancia um WebClient
-                WebClient client = new WebClient();
-
-                //Chama o método de post do WebClient passando o json dos alunos do banco
-                // como parâmetro
-                String resposta = client.post(json);
-
-                //Chama um Toast com o json gerado
-                Toast.makeText(this, resposta, Toast.LENGTH_LONG).show();
                 break;
         }
 
