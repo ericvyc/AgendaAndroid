@@ -25,8 +25,7 @@
         <activity
             android:name=".FormularioActivity"
             android:label="@string/title_activity_formulario"
-            android:theme="@style/AppTheme.NoActionBar">
-        </activity>
+            android:theme="@style/AppTheme.NoActionBar"></activity>
 
         <receiver android:name=".receiver.SMSReceiver">
             <intent-filter>
@@ -34,6 +33,7 @@
             </intent-filter>
         </receiver>
 
+        <activity android:name=".ProvasActivity"></activity>
     </application>
 
 </manifest>

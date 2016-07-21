@@ -98,13 +98,25 @@ public class ListaAlunosActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
 
-        //Testa se o item clicado foi o item de enviar notas
+        //Switch dos itens no menu da ListaAlunosActivity
         switch (item.getItemId()) {
+            //Testa se o item clicado foi o item de enviar notas
             case R.id.menu_enviar_notas :
 
                 //Chama a task async que faz a requisição no servidor num Thread
                 // secundária
                 new EnviaAlunosTask(this).execute();
+
+                break;
+
+            //Testa se o item clicado foi o item de baixar provas
+            case R.id.menu_baixar_provas :
+
+                //Cria uma intent para chamar a activity ProvasActivity
+                Intent vaiParaProvas = new Intent(this, ProvasActivity.class);
+
+                //Abre a tela de Provas (ProvasActivity)
+                startActivity(vaiParaProvas);
 
                 break;
         }
