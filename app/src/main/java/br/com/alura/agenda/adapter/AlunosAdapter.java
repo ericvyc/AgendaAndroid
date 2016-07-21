@@ -73,6 +73,30 @@ public class AlunosAdapter extends BaseAdapter {
         TextView campoTelefone = (TextView) view.findViewById(R.id.item_telefone);
         campoTelefone.setText(aluno.getTelefone());
 
+        //Pega campo endereço do layout criado e seta o endereço do aluno apenas no
+        //layout de paisagem
+        TextView campoEndereco = (TextView) view.findViewById(R.id.item_endereco);
+
+        //Testa se o campoEndereco existe na orientação atual do layout
+        if(campoEndereco != null) {
+
+            //Se a orientação do layout atual for paisagem, seta o endereço
+            //do aluno no campoEndereco
+            campoEndereco.setText(aluno.getEndereco());
+        }
+
+        //Pega campo site do layout criado e seta o site do aluno apenas no
+        //layout de paisagem
+        TextView campoSite = (TextView) view.findViewById(R.id.item_site);
+
+        //Testa se o campoSite existe na orientação atual do layout
+        if(campoSite != null) {
+
+            //Se a orientação do layout atual for paisagem, seta o site
+            //do aluno no campoSite
+            campoSite.setText(aluno.getSite());
+        }
+
         //Pega ImageView da foto do layout criado
         ImageView campoFoto = (ImageView) view.findViewById(R.id.item_foto);
 
