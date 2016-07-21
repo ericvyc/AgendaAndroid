@@ -1,5 +1,6 @@
 package br.com.alura.agenda;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
@@ -28,7 +29,7 @@ public class ProvasActivity extends AppCompatActivity {
         Prova provaPortugues = new Prova("Portugues", "25/05/2016", topicosPort);
 
         //Cria lista dos topicos da prova de matematcia
-        List<String> topicosMat = Arrays.asList("Equacoes de segundo grau", "Trigonometria");
+        List<String> topicosMat = Arrays.asList("Equações de segundo grau", "Trigonometria");
 
         //Instancia prova de matematica passando os dados da prova nos parametros
         // do construtor
@@ -61,6 +62,15 @@ public class ProvasActivity extends AppCompatActivity {
                 //Chama um Toast com o nome da prova clicado
                 Toast.makeText(ProvasActivity.this, "Clicou na prova de " + prova,
                         Toast.LENGTH_SHORT).show();
+
+                //Cria uma Intent para ir para activity DetalhesProvaActivity
+                Intent vaiParaDetalhes = new Intent(ProvasActivity.this, DetalhesProvaActivity.class);
+
+                //Coloca a prova na Intent com o método putExtra
+                vaiParaDetalhes.putExtra("prova", prova);
+
+                //Chama a Intent da activity DetalhesProvaActivity
+                startActivity(vaiParaDetalhes);
 
             }
         });
